@@ -20,6 +20,8 @@ if (form) {
 
       if (value !== cleanedValue) {
         formData.email = cleanedValue;
+        const currentType = event.target.type;
+        event.target.type = 'text';
         event.target.value = cleanedValue;
 
         const pos = Math.max(0, selectionStart - 1);
