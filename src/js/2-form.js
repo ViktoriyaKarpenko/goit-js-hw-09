@@ -22,16 +22,29 @@ if (form) {
         formData.email = cleanedValue;
         event.target.value = cleanedValue;
 
-        const newPosition = selectionStart - 1;
-        event.target.setSelectionRange(newPosition, newPosition);
+        const pos = Math.max(0, selectionStart - 1);
+        event.target.setSelectionRange(pos, pos);
       } else {
         formData.email = value;
       }
     } else if (name === 'message') {
-      formData.message = value.trim();
+      formData.message = value;
     }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+  });
+
+  form.addEventListener('focusout', event => {
+    if (event.target.name === 'message') {
+      const trimmedValue = event.target.value.trim();
+
+      // Оновлюємо і об'єкт, і саме поле на екрані
+      formData.message = trimmedValue;
+      event.target.value = trimmedValue;
+
+      // Оновлюємо localStorage вже чистими даними
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    }
   });
 
   form.addEventListener('submit', event => {
